@@ -1,5 +1,6 @@
+import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
-import { nanoid } from 'nanoid'
+import { addContacts } from 'redux/contactsSlice';
 import { Formik} from "formik"
 import {Forma, Input, Error, Button, Label} from './ContactForm.styled'
 
@@ -7,20 +8,17 @@ const initialValues = {
     name: '',
     number: '',
 }
-const contactId = () => {
-    return nanoid(4);
-}
 
 const shema = yup.object().shape({
     name: yup.string().required(),
 });
 
-export const ContactForm = ({addContacts}) => {
+export const ContactForm = () => {
+    const dispatch = useDispatch();
     const handleSubmit = (values, { resetForm }) => {
-      addContacts(values);
-        values.id = contactId();
-               resetForm()
-    }
+        dispatch(addContacts(values));
+        resetForm();
+    };
     return(
         <Formik
         initialValues={initialValues}
